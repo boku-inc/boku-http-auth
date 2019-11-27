@@ -4,6 +4,7 @@ script: mvn clean package
 before_deploy:
 - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
 - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+- git tag $project_version
 deploy:
   provider: releases
   api_key:
@@ -18,7 +19,8 @@ deploy:
   - server/target/boku-http-auth-server-$project_version-javadoc.jar
   - server/target/boku-http-auth-server-$project_version-sources.jar
   - server/target/boku-http-auth-server-$project_version.jar
-  - tools-zip/target/boku-auth-tools-1.1.zip 
+  - tools-zip/target/boku-auth-tools-$project_version.zip 
   skip_cleanup: true
   on:
     repo: boku-inc/boku-http-auth
+  name: $project_version
