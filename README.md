@@ -1,5 +1,7 @@
 # Boku API HTTP Signature Authentication Library
 
+[![Build Status](https://travis-ci.com/boku-inc/boku-http-auth.svg?token=L7vT8z6dvkBbsqpcyT3p&branch=master)](https://travis-ci.com/boku-inc/boku-http-auth)
+
 ## Overview
 
 This package contains both production ready library code, plus some demo applications to show how it is used and to aid
