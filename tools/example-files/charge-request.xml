@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<charge-request>
+    <merchant-id>example-merchant</merchant-id>
+    <merchant-request-id>6fcf9dfbd479ed82697fee71</merchant-request-id>
+    <merchant-transaction-id>9063a9f0e032b6239403b719</merchant-transaction-id>
+    <merchant-item-description>Test transaction</merchant-item-description>
+    <optin-id>2874610531542</optin-id>
+    <currency>JPY</currency>
+    <total-amount>2900</total-amount>
+    <timeout after="10000"/>
+</charge-request>

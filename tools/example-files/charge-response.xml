@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<charge-response>
+    <result status="OK">
+        <reason-code>0</reason-code>
+        <message>Operation Successful</message>
+        <retriable>false</retriable>
+    </result>
+    <timestamp>2019-07-15 12:06:46</timestamp>
+    <merchant-id>example-merchant</merchant-id>
+    <merchant-request-id>6fcf9dfbd479ed82697fee71</merchant-request-id>
+    <merchant-transaction-id>9063a9f0e032b6239403b719</merchant-transaction-id>
+    <optin-id>2874610531542</optin-id>
+    <charge-id>5ucup7ns9g6hb69n8j7lbdio</charge-id>
+    <charge-status>success</charge-status>
+    <country>JP</country>
+    <network-id>44f005</network-id>
+</charge-response>

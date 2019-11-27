@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly
+        xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+    <id>tools-zip</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <baseDirectory>boku-auth-tools-${project.version}</baseDirectory>
+
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>com.boku:boku-http-auth-tools:jar:main:${project.version}</include>
+            </includes>
+            <outputFileNameMapping>auth-tools.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <fileSet>
+            <directory>../tools/test-vectors</directory>
+            <includes>
+                <include>*</include>
+            </includes>
+            <outputDirectory>test-vectors</outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>../tools/example-files</directory>
+            <includes>
+                <include>*</include>
+            </includes>
+            <outputDirectory>example-files</outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+    </fileSets>
+    <files>
+        <file><source>../tools/config.properties</source></file>
+        <file><source>../tools/README.md</source></file>
+        <file><source>../LICENSE.txt</source></file>
+    </files>
+</assembly>

@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-SignedResponse: 2/HMAC_SHA256(H+SHA256(E)) partner-id=blahmerchant, key-id=k1, timestamp=1402300605, signature=92a2c4d87a237f3dddebd254f8f82ef964d57d8a84354ac71a13450f760f64fd
+Content-Length: 0
+Date: Mon, 09 Jun 2014 07:56:45 GMT
+Connection: close

@@ -1,0 +1,4 @@
+DELETE /test/canned/api-resp HTTP/1.1
+Accept: text/xml
+Authorization: 2/HMAC_SHA256(H+SHA256(E)) timestamp=1402300605, signature=c264eff145793bbce18e06865a7b403336db701c7c46eb7acee2faa00fe28ac8, key-id=k1, partner-id=blahmerchant
+Host: api.boku.com

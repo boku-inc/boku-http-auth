@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-SignedResponse: 2/HMAC_SHA256(H+SHA256(E)) partner-id=blahmerchant, key-id=k1, signed-headers=Content-Type, timestamp=1402300605, signature=fd0b95074619dba2b1ca52a12002b9680108073177a2278e18674e254aabb32f
+Content-Type: text/xml;charset=utf-8
+Content-Length: 138
+Date: Mon, 09 Jun 2014 07:56:45 GMT
+Connection: close
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<example-request>
+    <some-data>an example request</some-data>
+</example-request>

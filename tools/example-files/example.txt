@@ -1,0 +1,6 @@
+This is an example text file!
+
+It's UTF-8 encoded, so it can have non-ASCII characters such as 漢字とカタカナ。
+
+It also has emoji 😀
+And combining character emoji which may display as 1 or 3 characters depending on your device: 👩🏾‍🎨

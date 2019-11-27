@@ -1,0 +1,13 @@
+POST /test/echo HTTP/1.1
+Accept: text/xml
+Accept-Language: en-US, en;q=0.5
+Accept-Language: fr;q=0.1
+Authorization: 2/HMAC_SHA256(H+SHA256(E)) timestamp=1402300605, signature=79d86933093dbdc13093bf20018947405d88655ef1dda6920138cea7ea773809, signed-headers=Content-Type;Accept-Language, key-id=k1, partner-id=blahmerchant
+Host: api.boku.com
+Content-Length: 138
+Content-Type: text/xml;charset=utf-8
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<example-request>
+    <some-data>an example request</some-data>
+</example-request>

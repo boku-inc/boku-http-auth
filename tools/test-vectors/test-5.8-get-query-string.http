@@ -1,0 +1,4 @@
+GET /test/canned/api-resp?param_a=value%20a&param-b=value-b HTTP/1.1
+Accept: text/xml
+Authorization: 2/HMAC_SHA256(H+SHA256(E)) timestamp=1402300605, signature=8633c930e6e7c1e567fcc877732929495d36c9e73b68eac6219706e4ed139d63, key-id=k1, partner-id=blahmerchant
+Host: api.boku.com
