@@ -97,10 +97,9 @@
             </activation>
             <build>
                 <plugins>
-                    <!-- To release to Maven central -->
                     <plugin>
-                        <groupid>org.sonatype.plugins</groupid>
-                        <artifactid>nexus-staging-maven-plugin</artifactid>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
                         <version>1.6.8</version>
                         <extensions>true</extensions>
                         <configuration>
@@ -109,10 +108,9 @@
                             <autoreleaseafterclose>true</autoreleaseafterclose>
                         </configuration>
                     </plugin>
-                    <!-- To sign the artifacts -->
                     <plugin>
-                        <groupid>org.apache.maven.plugins</groupid>
-                        <artifactid>maven-gpg-plugin</artifactid>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.6</version>
                         <executions>
                             <execution>
