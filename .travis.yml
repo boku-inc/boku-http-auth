@@ -33,4 +33,4 @@ deploy:
     skip_cleanup: true
     on:
       repo: boku-inc/boku-http-auth
-      tags: true
+      tags: true 
