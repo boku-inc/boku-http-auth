@@ -14,6 +14,8 @@
     <packaging>pom</packaging>
 
     <name>Boku HTTP Auth - parent</name>
+    <url>https://github.com/boku-inc/boku-http-auth</url>
+    <description>A library to for merchants and clients to sign Boku HTTP requests.</description>
 
     <modules>
         <module>core</module>
@@ -30,6 +32,26 @@
         <org.slf4j.version>1.7.28</org.slf4j.version>
         <org.eclipse.jetty.version>9.4.24.v20191120</org.eclipse.jetty.version>
     </properties>
+
+    <developers>
+        <developer>
+            <name>Boku Inc.</name>
+            <email>itops@boku.com</email>
+            <organizationUrl>https://boku.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/boku-inc/boku-http-auth.git</connection>
+        <url>https://github.com/boku-inc/boku-http-auth</url>        
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <pluginManagement>
