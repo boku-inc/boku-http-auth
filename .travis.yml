@@ -1,26 +1,36 @@
 language: java
 jdk: openjdk8
+before_install:
+- echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
+- echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 script: mvn clean package
+install: mvn --settings .maven.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
 before_deploy:
 - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
 - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 deploy:
-  provider: releases
-  api_key:
-    secure: KTjO1633qa1DgS7ft1aDZDAV93obE4zAc6yWnnHyJBFwSWp9s4y5SW9jLdPJyAUPSGp4MfXSCW/qQzJxGQ99RqmLexY6fa1DJc58yei1ELpZxjVJGkVhsEXA7Sm3TaWVtUchFFP/PA7E9SVEThA65r+FqjPJjdgnhvBqlPvuc6OG2t8nBgtLqMwwXGXFRgJBBxIaatFRCi77G8O0yTLdrfVb/lswJTwBlQFv7QG/uHAdSPuiXUho3APKZw7jltxXzNQMsquEkhrclyBeZDEpVXPOXbzhUU8bn7GLFVcI7b4YlyeFy0G475AvsZQRKjRKS00TTgAHKpoHQpwE4VoL7d+1wKP107b+mWTwUMmh3GVUwFkJNFxkgnWMiZ2iy1sMdxl1GJLAmHWZ493W49YmzOBoMMZY/Wyj3PsfLoE/Q4GbQroUZDELasnwjtctPIxR+XFrhRfZmdXCRT+yqOq3bPZ62KTNSoKid9fGvmwS25ZLCprHvUZb8l3szU7zGwX0Eb8J0QtT8J119AiExrbVOKp+vRfiQV9zer1bvOvTErS8iKUZB4gdRyduxT+kgkFIJVYR1vabasThtY1iB5y0hb7k2j+aOKZ8E3a+m0DcR5QEVRDy0RShXT4k1Qj6PKrHfQ+2+218OIrpuLd/EyVAayxTvvdJeOguQ+Xe1otAFGU=
-  file: 
-  - client/target/boku-http-auth-client-$project_version-javadoc.jar
-  - client/target/boku-http-auth-client-$project_version-sources.jar
-  - client/target/boku-http-auth-client-$project_version.jar
-  - core/target/boku-http-auth-core-$project_version-javadoc.jar
-  - core/target/boku-http-auth-core-$project_version-sources.jar
-  - core/target/boku-http-auth-core-$project_version.jar
-  - server/target/boku-http-auth-server-$project_version-javadoc.jar
-  - server/target/boku-http-auth-server-$project_version-sources.jar
-  - server/target/boku-http-auth-server-$project_version.jar
-  - tools-zip/target/boku-auth-tools-$project_version.zip 
-  skip_cleanup: true
-  on:
-    repo: boku-inc/boku-http-auth
-    tags: true
-  name: $project_version
+  - provider: releases
+    api_key:
+      secure: KTjO1633qa1DgS7ft1aDZDAV93obE4zAc6yWnnHyJBFwSWp9s4y5SW9jLdPJyAUPSGp4MfXSCW/qQzJxGQ99RqmLexY6fa1DJc58yei1ELpZxjVJGkVhsEXA7Sm3TaWVtUchFFP/PA7E9SVEThA65r+FqjPJjdgnhvBqlPvuc6OG2t8nBgtLqMwwXGXFRgJBBxIaatFRCi77G8O0yTLdrfVb/lswJTwBlQFv7QG/uHAdSPuiXUho3APKZw7jltxXzNQMsquEkhrclyBeZDEpVXPOXbzhUU8bn7GLFVcI7b4YlyeFy0G475AvsZQRKjRKS00TTgAHKpoHQpwE4VoL7d+1wKP107b+mWTwUMmh3GVUwFkJNFxkgnWMiZ2iy1sMdxl1GJLAmHWZ493W49YmzOBoMMZY/Wyj3PsfLoE/Q4GbQroUZDELasnwjtctPIxR+XFrhRfZmdXCRT+yqOq3bPZ62KTNSoKid9fGvmwS25ZLCprHvUZb8l3szU7zGwX0Eb8J0QtT8J119AiExrbVOKp+vRfiQV9zer1bvOvTErS8iKUZB4gdRyduxT+kgkFIJVYR1vabasThtY1iB5y0hb7k2j+aOKZ8E3a+m0DcR5QEVRDy0RShXT4k1Qj6PKrHfQ+2+218OIrpuLd/EyVAayxTvvdJeOguQ+Xe1otAFGU=
+    file: 
+    - client/target/boku-http-auth-client-$project_version-javadoc.jar
+    - client/target/boku-http-auth-client-$project_version-sources.jar
+    - client/target/boku-http-auth-client-$project_version.jar
+    - core/target/boku-http-auth-core-$project_version-javadoc.jar
+    - core/target/boku-http-auth-core-$project_version-sources.jar
+    - core/target/boku-http-auth-core-$project_version.jar
+    - server/target/boku-http-auth-server-$project_version-javadoc.jar
+    - server/target/boku-http-auth-server-$project_version-sources.jar
+    - server/target/boku-http-auth-server-$project_version.jar
+    - tools-zip/target/boku-auth-tools-$project_version.zip 
+    skip_cleanup: true
+    on:
+      repo: boku-inc/boku-http-auth
+      tags: true
+    name: $project_version
+  - provider: script
+    script: mvn clean deploy --settings .maven.xml -DskipTests=true -B -U -Prelease
+    skip_cleanup: true
+    on:
+      repo: boku-inc/boku-http-auth
+      tags: true
