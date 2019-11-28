@@ -21,6 +21,6 @@ deploy:
   - tools-zip/target/boku-auth-tools-$project_version.zip 
   skip_cleanup: true
   on:
-  - repo: boku-inc/boku-http-auth
-  - tags: true
+    repo: boku-inc/boku-http-auth
+    tags: true
   name: $project_version
