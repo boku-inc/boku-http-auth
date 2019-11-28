@@ -17,6 +17,7 @@ import com.boku.auth.http.client.exception.InvalidAPIEntityException;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 import org.hamcrest.Matchers;
+import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -392,7 +393,7 @@ public class ClientTest extends CWAIntegrationTestBase {
             ));
 
         exception.expect(HttpResponseException.class);
-        exception.expectMessage("HTTP/1.1 500 Server Error: text/plain; charset=UTF-8[Ohnoes]");
+        exception.expectMessage(new IsEqualIgnoringCase("HTTP/1.1 500 Server Error: text/plain; charset=UTF-8[Ohnoes]"));
 
         env.client
             .get(url("/auth/error"))
@@ -415,7 +416,7 @@ public class ClientTest extends CWAIntegrationTestBase {
             ));
 
         exception.expect(HttpResponseException.class);
-        exception.expectMessage("HTTP/1.1 301 Moved Permanently: text/plain; charset=UTF-8[Moved!]");
+        exception.expectMessage(new IsEqualIgnoringCase("HTTP/1.1 301 Moved Permanently: text/plain; charset=UTF-8[Moved!]"));
 
         env.client
             .get(url("/auth/redirect"))

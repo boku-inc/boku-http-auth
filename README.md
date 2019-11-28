@@ -1,7 +1,5 @@
 # Boku API HTTP Signature Authentication Library
 
-[![Build Status](https://travis-ci.com/boku-inc/boku-http-auth.svg?token=L7vT8z6dvkBbsqpcyT3p&branch=master)](https://travis-ci.com/boku-inc/boku-http-auth)
-
 ## Overview
 
 This package contains both production ready library code, plus some demo applications to show how it is used and to aid
@@ -138,7 +136,7 @@ This code is located under `com.boku.auth.http.server`.
 
 ### Dependencies
 
-In addition to depending on the `core` module, the server code depends on the Java Servlet API v3.0.1.
+In addition to depending on the `core` module, the server code depends on the Java Servlet API v3.1.0.
 
 This code should be compatible with earlier and later versions of the servlet API, but depending on your web server
 environment you may need to exclude the servlet API dependency or make other version management adjustments to make

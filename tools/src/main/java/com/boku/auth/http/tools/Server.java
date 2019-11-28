@@ -54,6 +54,7 @@ public class Server {
         ".txt", "text/plain",
         ".xml", "text/xml",
         ".json", "application/json",
+        ".md", "text/markdown",
     };
 
     static final class ServerOptions implements Options {

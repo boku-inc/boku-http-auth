@@ -28,7 +28,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <org.slf4j.version>1.7.28</org.slf4j.version>
-        <org.eclipse.jetty.version>9.2.22.v20170606</org.eclipse.jetty.version>
+        <org.eclipse.jetty.version>9.4.24.v20191120</org.eclipse.jetty.version>
     </properties>
 
     <build>
@@ -110,7 +110,7 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.0.1</version>
+                <version>3.1.0</version>
             </dependency>
 
             <dependency>

@@ -14,11 +14,13 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -731,6 +733,19 @@ public class BokuHttpAuthFilterTest {
         }
         Mockito.when(ret.getInputStream()).thenReturn(new ServletInputStream() {
             @Override
+            public boolean isFinished() {
+                throw new UnsupportedOperationException();
+            }
+            @Override
+            public boolean isReady() {
+                throw new UnsupportedOperationException();
+            }
+            @Override
+            public void setReadListener(ReadListener readListener) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
             public int read() {
                 return is.read();
             }
@@ -769,6 +784,15 @@ public class BokuHttpAuthFilterTest {
         });
 
         Mockito.when(ret.getOutputStream()).thenReturn(new ServletOutputStream() {
+            @Override
+            public boolean isReady() {
+                throw new UnsupportedOperationException();
+            }
+            @Override
+            public void setWriteListener(WriteListener writeListener) {
+                throw new UnsupportedOperationException();
+            }
+
             @Override
             public void write(int b) {
                 outputStreamCapture.write(b);
