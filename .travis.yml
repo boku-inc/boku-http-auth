@@ -26,6 +26,7 @@ deploy:
     skip_cleanup: true
     on:
       repo: boku-inc/boku-http-auth
+      branch: master
       tags: true
     name: v$project_version
   - provider: script
@@ -33,4 +34,5 @@ deploy:
     skip_cleanup: true
     on:
       repo: boku-inc/boku-http-auth
+      branch: master
       tags: true
