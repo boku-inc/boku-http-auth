@@ -161,6 +161,7 @@ public class BokuAPIClient {
         private final HttpUriRequest request;
         private AuthorizationHeader authHeader;
         private String entityString;
+        private boolean requireSignedResponse;
 
         private RequestBuilder(HttpUriRequest request) {
             this.request = request;
@@ -170,10 +171,17 @@ public class BokuAPIClient {
          * Use the given {@link AuthorizationHeader} as the basis for signing the request.<br>
          * Only partnerId and keyId are required to be specified, the rest will be filled out automatically based on
          * the request itself.<br>
-         * If you wish to fully specify the contents of the Authorization header, use {@link #withHeader} instead.
+         * If you wish to fully specify the contents of the Authorization header, use {@link #withHeader} instead.<br>
+         * <br>
+         * As setting the Authorization indicates that this request is signed and authenticated, it will also default to
+         * requiring that the corresponding response is correctly signed. If you wish to disable this requirement,
+         * call withOptionRequireSignedResponse(false).<br>
+         * Conversely, if you are manually supplying the Authorization header as described above, you may wish to set
+         * withOptionRequireSignedResponse(true).
          */
         public RequestBuilder withAuthorization(AuthorizationHeader authHeader) {
             this.authHeader = authHeader;
+            this.requireSignedResponse = true;
             return this;
         }
 
@@ -232,6 +240,14 @@ public class BokuAPIClient {
         }
 
         /**
+         * Option to set whether the response signature is required.
+         */
+        public RequestBuilder withOptionRequireSignedResponse(boolean requireSignedResponse) {
+            this.requireSignedResponse = requireSignedResponse;
+            return this;
+        }
+
+        /**
          * Internal method called by the other variants of {@link #execute}.
          */
         private BokuAPIClientResponse executeAndReturnAPIResponse() throws IOException, BokuAPIClientException {
@@ -255,8 +271,15 @@ public class BokuAPIClient {
 
             logger.debug("Response:\n{}", apiClientResponse);
 
-            // Verify signature on the response
-            if (authHeader != null) {
+            // Verify signature on the response if required
+            Header[] respAuthHeaders = httpResponse.getHeaders(AuthorizationHeader.RESPONSE_HEADER);
+            if(this.requireSignedResponse && respAuthHeaders.length == 0) {
+                throw new BokuAPIClientException(
+                        "Got " + httpResponse.getStatusLine() + " with " + respAuthHeaders.length + " " + AuthorizationHeader.RESPONSE_HEADER + " headers, expected 1!",
+                        apiClientResponse
+                );
+            }
+            if(respAuthHeaders.length > 0) {
                 verifyResponseSignature(httpResponse, apiClientResponse);
             }
 

@@ -2,6 +2,8 @@ package com.boku.auth.http.server.servletfilter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -176,6 +178,12 @@ public class BokuHttpAuthFilter implements Filter {
                         }
                     },
                     new HttpServletResponseWrapper(httpResponse) {
+
+                        @Override
+                        public PrintWriter getWriter() throws IOException {
+                            return new PrintWriter(new OutputStreamWriter(outputBuffer, this.getCharacterEncoding()));
+                        }
+
                         @Override
                         public ServletOutputStream getOutputStream() {
                             return new ServletOutputStream() {

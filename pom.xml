@@ -10,7 +10,7 @@
 
     <groupId>com.boku</groupId>
     <artifactId>boku-http-auth-parent</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>pom</packaging>
 
     <name>Boku HTTP Auth - parent</name>
