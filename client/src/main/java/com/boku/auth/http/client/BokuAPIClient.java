@@ -161,6 +161,7 @@ public class BokuAPIClient {
         private final HttpUriRequest request;
         private AuthorizationHeader authHeader;
         private String entityString;
+        private boolean verifyResponseSignature = true;
 
         private RequestBuilder(HttpUriRequest request) {
             this.request = request;
@@ -232,6 +233,15 @@ public class BokuAPIClient {
         }
 
         /**
+         * Option to set whether the response signature should be verified.
+         * Defaults to true if not set.
+         */
+        public RequestBuilder withVerifyResponseSignature(boolean verifyResponseSignature) {
+            this.verifyResponseSignature = verifyResponseSignature;
+            return this;
+        }
+
+        /**
          * Internal method called by the other variants of {@link #execute}.
          */
         private BokuAPIClientResponse executeAndReturnAPIResponse() throws IOException, BokuAPIClientException {
@@ -256,7 +266,7 @@ public class BokuAPIClient {
             logger.debug("Response:\n{}", apiClientResponse);
 
             // Verify signature on the response
-            if (authHeader != null) {
+            if (authHeader != null && this.verifyResponseSignature) {
                 verifyResponseSignature(httpResponse, apiClientResponse);
             }
 
