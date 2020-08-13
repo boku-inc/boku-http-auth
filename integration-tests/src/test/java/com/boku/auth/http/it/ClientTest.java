@@ -136,7 +136,7 @@ public class ClientTest extends CWAIntegrationTestBase {
         env.client
                 .get(url("/no-signature"))
                 .withAuthorization(authorization())
-                .withVerifyResponseSignature(false)
+                .withOptionRequireSignedResponse(false)
                 .execute();
     }
 
@@ -160,6 +160,29 @@ public class ClientTest extends CWAIntegrationTestBase {
             .get(url("/invalid-signature"))
             .withAuthorization(authorization())
             .execute();
+    }
+
+    @Test
+    public void testSignatureNotRequiredButInvalidSignatureReturned() throws IOException {
+        env.server.addServlet("/invalid-signature", Servlets.noAuth(
+                new HttpRequestHandler() {
+                    @Override
+                    public void handle(HttpServletRequest req, HttpServletResponse resp, byte[] requestEntity) throws IOException {
+                        new Servlets.PingHandler().handle(req, resp, requestEntity);
+                        AuthorizationHeader ah = AuthorizationHeader.parse(req.getHeader(AuthorizationHeader.REQUEST_HEADER));
+                        resp.setHeader(AuthorizationHeader.RESPONSE_HEADER, ah.toString());
+                    }
+                }
+        ));
+
+        exception.expect(BokuAPIClientException.class);
+        exception.expectMessage(Matchers.containsString("Failed to verify signature of HTTP/1.1 200 OK response"));
+
+        env.client
+                .get(url("/invalid-signature"))
+                .withAuthorization(authorization())
+                .withOptionRequireSignedResponse(false)
+                .execute();
     }
 
     @Test

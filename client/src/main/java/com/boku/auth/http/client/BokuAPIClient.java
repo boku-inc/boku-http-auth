@@ -161,7 +161,7 @@ public class BokuAPIClient {
         private final HttpUriRequest request;
         private AuthorizationHeader authHeader;
         private String entityString;
-        private boolean verifyResponseSignature = true;
+        private boolean requireSignedResponse = true;
 
         private RequestBuilder(HttpUriRequest request) {
             this.request = request;
@@ -233,11 +233,12 @@ public class BokuAPIClient {
         }
 
         /**
-         * Option to set whether the response signature should be verified.
+         * Option to set whether the response signature is required.
+         *
          * Defaults to true if not set.
          */
-        public RequestBuilder withVerifyResponseSignature(boolean verifyResponseSignature) {
-            this.verifyResponseSignature = verifyResponseSignature;
+        public RequestBuilder withOptionRequireSignedResponse(boolean requireSignedResponse) {
+            this.requireSignedResponse = requireSignedResponse;
             return this;
         }
 
@@ -266,8 +267,8 @@ public class BokuAPIClient {
             logger.debug("Response:\n{}", apiClientResponse);
 
             // Verify signature on the response
-            if (authHeader != null && this.verifyResponseSignature) {
-                verifyResponseSignature(httpResponse, apiClientResponse);
+            if (authHeader != null) {
+                verifyResponseSignature(httpResponse, apiClientResponse, this.requireSignedResponse);
             }
 
             return apiClientResponse;
@@ -352,14 +353,35 @@ public class BokuAPIClient {
 
     }
 
-    private void verifyResponseSignature(HttpResponse httpResponse, BokuAPIClientResponse apiClientResponse) throws BokuAPIClientException {
+    private void verifyResponseSignature(HttpResponse httpResponse, BokuAPIClientResponse apiClientResponse, boolean requireSignedResponse)
+            throws BokuAPIClientException {
         Header[] respAuthHeaders = httpResponse.getHeaders(AuthorizationHeader.RESPONSE_HEADER);
-        if (respAuthHeaders.length != 1) {
-            throw new BokuAPIClientException(
-                "Got " + httpResponse.getStatusLine() + " with " + respAuthHeaders.length + " " + AuthorizationHeader.RESPONSE_HEADER + " headers, expected 1!",
-                apiClientResponse
-            );
+        if(requireSignedResponse) {
+            if (respAuthHeaders.length != 1) {
+                throw new BokuAPIClientException(
+                        "Got " + httpResponse.getStatusLine() + " with " + respAuthHeaders.length + " " + AuthorizationHeader.RESPONSE_HEADER + " headers, expected 1!",
+                        apiClientResponse
+                );
+            }
+
+            verifySignature(httpResponse, apiClientResponse, respAuthHeaders);
+        } else {
+            if(respAuthHeaders.length == 0){
+                return;
+            }
+
+            if (respAuthHeaders.length > 1) {
+                throw new BokuAPIClientException(
+                        "Got " + httpResponse.getStatusLine() + " with " + respAuthHeaders.length + " " + AuthorizationHeader.RESPONSE_HEADER + " headers, expected 1!",
+                        apiClientResponse
+                );
+            }
+
+            verifySignature(httpResponse, apiClientResponse, respAuthHeaders);
         }
+    }
+
+    private void verifySignature(HttpResponse httpResponse, BokuAPIClientResponse apiClientResponse, Header[] respAuthHeaders) throws BokuAPIClientException {
         String respAuthHeaderValue = respAuthHeaders[0].getValue();
 
         AuthorizationHeader respAuthHeader;
