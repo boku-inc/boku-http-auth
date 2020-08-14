@@ -366,18 +366,14 @@ public class BokuAPIClient {
 
             verifySignature(httpResponse, apiClientResponse, respAuthHeaders);
         } else {
-            if(respAuthHeaders.length == 0){
-                return;
-            }
-
-            if (respAuthHeaders.length > 1) {
+            if(respAuthHeaders.length == 1){
+                verifySignature(httpResponse, apiClientResponse, respAuthHeaders);
+            } else if (respAuthHeaders.length > 1) {
                 throw new BokuAPIClientException(
                         "Got " + httpResponse.getStatusLine() + " with " + respAuthHeaders.length + " " + AuthorizationHeader.RESPONSE_HEADER + " headers, expected 1!",
                         apiClientResponse
                 );
             }
-
-            verifySignature(httpResponse, apiClientResponse, respAuthHeaders);
         }
     }
 
