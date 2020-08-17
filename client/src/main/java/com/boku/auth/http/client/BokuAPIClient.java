@@ -161,7 +161,7 @@ public class BokuAPIClient {
         private final HttpUriRequest request;
         private AuthorizationHeader authHeader;
         private String entityString;
-        private boolean requireSignedResponse = true;
+        private boolean requireSignedResponse;
 
         private RequestBuilder(HttpUriRequest request) {
             this.request = request;
@@ -175,6 +175,7 @@ public class BokuAPIClient {
          */
         public RequestBuilder withAuthorization(AuthorizationHeader authHeader) {
             this.authHeader = authHeader;
+            this.requireSignedResponse = true;
             return this;
         }
 
@@ -266,9 +267,16 @@ public class BokuAPIClient {
 
             logger.debug("Response:\n{}", apiClientResponse);
 
-            // Verify signature on the response
-            if (authHeader != null) {
-                verifyResponseSignature(httpResponse, apiClientResponse, this.requireSignedResponse);
+            // Verify signature on the response if required
+            Header[] respAuthHeaders = httpResponse.getHeaders(AuthorizationHeader.RESPONSE_HEADER);
+            if(this.requireSignedResponse && respAuthHeaders.length == 0){
+                throw new BokuAPIClientException(
+                        "Got " + httpResponse.getStatusLine() + " with " + respAuthHeaders.length + " " + AuthorizationHeader.RESPONSE_HEADER + " headers, expected 1!",
+                        apiClientResponse
+                );
+            }
+            if(respAuthHeaders.length > 0){
+                verifyResponseSignature(httpResponse, apiClientResponse);
             }
 
             return apiClientResponse;
@@ -353,31 +361,14 @@ public class BokuAPIClient {
 
     }
 
-    private void verifyResponseSignature(HttpResponse httpResponse, BokuAPIClientResponse apiClientResponse, boolean requireSignedResponse)
-            throws BokuAPIClientException {
+    private void verifyResponseSignature(HttpResponse httpResponse, BokuAPIClientResponse apiClientResponse) throws BokuAPIClientException {
         Header[] respAuthHeaders = httpResponse.getHeaders(AuthorizationHeader.RESPONSE_HEADER);
-        if(requireSignedResponse) {
-            if (respAuthHeaders.length != 1) {
-                throw new BokuAPIClientException(
-                        "Got " + httpResponse.getStatusLine() + " with " + respAuthHeaders.length + " " + AuthorizationHeader.RESPONSE_HEADER + " headers, expected 1!",
-                        apiClientResponse
-                );
-            }
-
-            verifySignature(httpResponse, apiClientResponse, respAuthHeaders);
-        } else {
-            if(respAuthHeaders.length == 1){
-                verifySignature(httpResponse, apiClientResponse, respAuthHeaders);
-            } else if (respAuthHeaders.length > 1) {
-                throw new BokuAPIClientException(
-                        "Got " + httpResponse.getStatusLine() + " with " + respAuthHeaders.length + " " + AuthorizationHeader.RESPONSE_HEADER + " headers, expected 1!",
-                        apiClientResponse
-                );
-            }
+        if (respAuthHeaders.length != 1) {
+            throw new BokuAPIClientException(
+                    "Got " + httpResponse.getStatusLine() + " with " + respAuthHeaders.length + " " + AuthorizationHeader.RESPONSE_HEADER + " headers, expected 1!",
+                    apiClientResponse
+            );
         }
-    }
-
-    private void verifySignature(HttpResponse httpResponse, BokuAPIClientResponse apiClientResponse, Header[] respAuthHeaders) throws BokuAPIClientException {
         String respAuthHeaderValue = respAuthHeaders[0].getValue();
 
         AuthorizationHeader respAuthHeader;
@@ -385,16 +376,16 @@ public class BokuAPIClient {
             respAuthHeader = AuthorizationHeader.parse(respAuthHeaderValue);
         } catch (IllegalArgumentException ex) {
             throw new BokuAPIClientException(
-                "Invalid " + AuthorizationHeader.RESPONSE_HEADER + " header: " + ex.getMessage()
-                + " (header value: " + respAuthHeaderValue + ")",
-                apiClientResponse
+                    "Invalid " + AuthorizationHeader.RESPONSE_HEADER + " header: " + ex.getMessage()
+                            + " (header value: " + respAuthHeaderValue + ")",
+                    apiClientResponse
             );
         }
 
         CanonicalHttpResponse canonicalResponse = canonicalHttpMessageFactory.createResponse(
-            respAuthHeader.getSignedHeaders(),
-            httpResponse,
-            apiClientResponse.getEntity() == null ? null : apiClientResponse.getEntity().getData()
+                respAuthHeader.getSignedHeaders(),
+                httpResponse,
+                apiClientResponse.getEntity() == null ? null : apiClientResponse.getEntity().getData()
         );
 
         try {

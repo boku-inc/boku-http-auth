@@ -133,11 +133,12 @@ public class ClientTest extends CWAIntegrationTestBase {
     public void testNoResponseSignatureRequired() throws IOException {
         env.server.addServlet("/no-signature", Servlets.noAuth(new Servlets.PingHandler()));
 
-        env.client
+        String responseText = env.client
                 .get(url("/no-signature"))
                 .withAuthorization(authorization())
                 .withOptionRequireSignedResponse(false)
                 .execute();
+        Assert.assertEquals("GET: pong", responseText);
     }
 
     @Test
