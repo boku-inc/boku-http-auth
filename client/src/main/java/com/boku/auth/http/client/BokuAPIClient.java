@@ -235,8 +235,6 @@ public class BokuAPIClient {
 
         /**
          * Option to set whether the response signature is required.
-         *
-         * Defaults to true if not set.
          */
         public RequestBuilder withOptionRequireSignedResponse(boolean requireSignedResponse) {
             this.requireSignedResponse = requireSignedResponse;
