@@ -4,14 +4,16 @@ before_install:
 - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
 - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 script: mvn clean package
-install: mvn --settings .maven.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
+install: mvn --settings .maven.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true
+  -B -V
 before_deploy:
 - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
-- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep
+  -v '\[')
 deploy:
   - provider: releases
     api_key:
-      secure: VMebPj/wwQb2gXCqByCtwGkWa8X9BqYmvILLfUCiZdZoZB58nNu/n4ynefoo7F79npOIjRs+u9u2czz298n8vnxWua+9MERmjgfy3yYccGXvCAswe8bRgS344f+TpZhB1WJqaaZKvVmwEE3L2H8HOuxwg7NfWYYXfM62W9O1ebrdK+GUi3OCG8cq8qRubXLtWYl2wWii2o1aeZtUIfdBjb5RBVPfBk+B/QNo0i3YE2+EbUcBDGNQ+9+9J8NPiBDY/4EMF73gaDP6NX/WIJ8m9UXpk92sZy0wtG6LFtGr89mPh2zaZCQjTxUIuVDL8h3kEGw0gmSKkOntDCwy4zwNjYRybtQ92ELpzO2dvJVtsmUXEyCG0DABSBekGsTnZ4VsfEqUa0pvyYkc+O7GwN3zSPHL4LuQvA1o2HzaNpj98Qt9UF78kX+JFeWPqIt3pVrOvKpo2T0DEy+XNmPomFJUSNsLd5FtDUSaIzFSnmikZ2xWZLuvd6xM+WaS0+2zo7+FduhVycUG8efOOnIJg0up+NNF3pywNJEgjBcvtiKzE7xIWtkpKjDspcgF7CIWA0DkqxvLFrWk4EPrs0mlGXbQijln2vMtaTeImgPiZl+3MbpJGeGhNv42xWoUKejyDHWTCqtVtbjJyv4T/tKkkji7wpm2MyNQRTPiRvePn/XTRrU=
+      secure: MOJaO/9kIjpd0ACh8UH8s6YUYghcPn7wwiXUAHvEXPAL35gJrXjoAdGoeA0BS9aolZOYvp0Gdto5fsIDtuNccsrd+3wz0LYB55zSfAcXJ6lMrVxj91f2XwPzLrmLd8cHgsgf9JcnYLuLA1HNxwW9aYfg3lLmVAuA34GbbTHcrngT9ERg+Gq9vKatKIJmj5UhTrzsajauTu+Uhs3yt/2qNeQKE784aq4k6hdliCcqPO1q42eyl8pNBgpHUcYcebbPTMCYwl//+R+bLmbpoB3Ig97npXNww3AZIvFGe9792q7fsaLXdM02LXf9cRbRqZR0mO/CtRiYfAuLu72guQBASkLcxPBm+6XgBbzuoxJ/qSMQobEBisgyCAAnErRWyzak74VxzL3tyNtELuEHWPxdmL4kR4pdtbOTXAu8XV3Vti5cPys1d+i2TGN4pIBx9AB4zG66wYFmbxgQsFqTPOnaZuLCgsDXf3ckISt0kvMqMxLPSTxaa8YRN6cCJkAq9Vj3wM0sivJzxZmLTaCAmBAIMCnC2NnKx3ckOqA+OS1+Xw8XJoqjiUj7XAc+OFKisTwxANmon5/k21SXhFiMaIFja5sEVA18YeLs73u/PdQ1mKrYzpAsQarGVERwhcXWkbA5JLviQdlu5ef60mXKimnpakKQ6qXlabP15zo1KfHrpxY=
     file: 
     - client/target/boku-http-auth-client-$project_version-javadoc.jar
     - client/target/boku-http-auth-client-$project_version-sources.jar
@@ -23,7 +25,7 @@ deploy:
     - server/target/boku-http-auth-server-$project_version-sources.jar
     - server/target/boku-http-auth-server-$project_version.jar
     - tools-zip/target/boku-auth-tools-$project_version.zip 
-    skip_cleanup: true
+    skip_cleanup: 'true'
     on:
       repo: boku-inc/boku-http-auth
       branch: master
