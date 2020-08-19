@@ -8,6 +8,29 @@
         </license>
     </licenses>
 
+    <description>
+        This package contains both production ready library code, plus some demo applications to show how to sign
+        requests made to Boku's APIs
+    </description>
+    <url>https://github.com/boku-inc/boku-http-auth</url>
+
+    <scm>
+        <url>https://github.com/boku-inc/boku-http-auth</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>Kevin</id>
+            <name>Kevin Huang</name>
+            <email>kevin.huang@boku.com</email>
+            <organization>Boku Inc.</organization>
+            <organizationUrl>https://www.boku.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
     <groupId>com.boku</groupId>
     <artifactId>boku-http-auth-parent</artifactId>
     <version>1.2</version>
