@@ -6,6 +6,9 @@ This scheme attempts to ensure that the request method, path, any query string p
 
 Note that in addition to using this HTTP message signing scheme, it's also strongly recommended (and usually required) that the HTTP connection itself is over a TLS secured channel.
 
+# Auth signing examples / tools
+To simplify your integration, we have made several examples available, as well as tools to test your authentication implementation. These examples and tools may be downloaded from the [Boku GitHub account](https://github.com/boku-inc/boku-http-auth).
+
 # Protocol Exchange / Format
 
 ## Request / Response Flow
