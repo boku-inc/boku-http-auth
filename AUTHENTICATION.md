@@ -52,7 +52,7 @@ A table of valid parameters are in the following table:
 | key-id | Identifier for the key used for signing | String | 123A | Y |
 | signed-headers | A semi-colon separated list of HTTP headers that were included during the signing process. (See below section [More on signed headers](#more-on-signed-headers))<br/><br/>If not present, no headers were signed. | String | Content-Type;X-App-Specific-Foo | N |
 | timestamp | The time the request or response was signed, as the number of seconds since the UTC unix epoch (1970/01/01).<br/><br/>This is used to mitigate certain replay attacks by making a signed message valid only for a fixed time period. | Integer (unsigned) | 1402285260 | Y |
-| signature | The actual calculated signature of the HTTP request or response that this header accompanies.<br/><br/>In this scheme, the value is a lower-case hex encoded SHA-256 digest, i.e. 64 chars long. | String | 9df1f39b8030f56ffb77b\ 8f4662f462c916a02f8e8\ 5a566441ee82a2639de5a1 | Y |
+| signature | The actual calculated signature of the HTTP request or response that this header accompanies.<br/><br/>In this scheme, the value is a lower-case hex encoded SHA-256 digest, i.e. 64 chars long. | String | 9df1f39b8030f56ffb77b8f4662f462c\\<br/>916a02f8e85a566441ee82a2639de5a1 | Y |
 
 # Signature Generation Process
 
@@ -67,11 +67,11 @@ The following illustrates how to construct the message to sign, where:
 
 ```
 method + " " + path + ( "?" + query_string )? + "\n" +
-    signed_header_1_name + ":" + " " + signed_header_1_value + "\n" +
-    ...
-    signed_header_N_name + ":" + " " + signed_header_N_value + "\n" +
-    ( entity_digest )? + "\n"
-    timestamp
+signed_header_1_name + ":" + " " + signed_header_1_value + "\n" +
+...
+signed_header_N_name + ":" + " " + signed_header_N_value + "\n" +
+( entity_digest )? + "\n"
+timestamp
 ```
 
 | Symbol | Explanation | Request / Response | Example |
@@ -87,22 +87,7 @@ method + " " + path + ( "?" + query_string )? + "\n" +
 ## Message To Sign example - HTTP Request
 Given the following HTTP request:
 
-<pre>
-<span style="background:green;color:white;">POST</span><span style="background:yellow;color:white;">&nbsp;</span><span style="background:blue;color:white;">/test/echo?foo=bar&hoge=piyo</span> HTTP/1.1
-Host: api.boku.com
-Accept: text/xml
-<span style="background:purple;color:white;">Content-type: text/xml; charset=utf-8</span>
-Content-length: 282
-
-<span style="background:red;color:white;">&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
-&lt;optin-request&gt;
-    &lt;country&gt;US&lt;/country&gt;
-    &lt;merchant-id&gt;gatewaymerchant&lt;/merchant-id&gt;
-    &lt;merchant-request-id&gt;1002001&lt;/merchant-request-id&gt;
-    &lt;msisdn&gt;14155551234&lt;/msisdn&gt;
-    &lt;optin-type&gt;otp&lt;/optin-type&gt;
-&lt;/optin-request&gt;</span>
-</pre>
+![Example](https://files.readme.io/18ae810-confluence-formatting-sucks-1.png)
 
 And assuming a partial **Authorization** header to be sent with the request:
 ```
