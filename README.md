@@ -176,10 +176,10 @@ When using this static version of `ServerAuthorizationComponentsFactory` configu
 This module contains standalone programs that are designed to be used as-is for testing purposes, rather than code
 to be imported into production applications.  
 
-To get started, build the project and then run `java -jar tools/target/boku-http-auth-tools-1.2-main.jar` - the online
+To get started, build the project and then run `java -jar tools/target/boku-http-auth-tools-1.3-main.jar` - the online
 help should let you proceed from there.
 
-If you have trouble building these tools, a pre-built package is available under the name `boku-auth-tools-1.2.zip`.  
+If you have trouble building these tools, a pre-built package is available under the name `boku-auth-tools-1.3.zip`.  
 
 There are several classes under `com.boku.auth.http.tools` that start with the prefix `Example_` - we have attempted
 to make these as simple as possible, and although they are not production quality code they can be used to see how
