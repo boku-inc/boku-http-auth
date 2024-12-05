@@ -21,8 +21,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +57,7 @@ public class BokuAPIClient {
     private final Charset requestCharset;
     private final EntityMarshaller entityMarshaller;
     private final String entityMarshallerContentType;
+    private final HttpContext httpContext;
 
     /**
      * Create a client instance configured with the given entity marshaller and request charset.
@@ -73,6 +76,8 @@ public class BokuAPIClient {
         this.httpSigner = httpSigner;
         this.requestCharset = requestCharset != null ? requestCharset : StandardCharsets.UTF_8;
         this.entityMarshaller = entityMarshaller;
+        this.httpContext = new HttpClientContext();
+
         if (entityMarshaller == null) {
             this.entityMarshallerContentType = null;
         } else if (entityMarshaller.getContentType().contains(";")) {
@@ -261,7 +266,7 @@ public class BokuAPIClient {
             logRequest(this.request, this.entityString);
 
             // Execute the request and convert it into API client response, fully reading in any entity data
-            HttpResponse httpResponse = httpClient.execute(this.request);
+            HttpResponse httpResponse = httpClient.execute(this.request, httpContext);
             BokuAPIClientResponse apiClientResponse;
             try {
                 apiClientResponse = createBokuAPIClientResponse(httpResponse);

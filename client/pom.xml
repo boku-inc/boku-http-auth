@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.boku</groupId>
         <artifactId>boku-http-auth-parent</artifactId>
-        <version>1.2</version>
+        <version>1.3</version>
     </parent>
     <artifactId>boku-http-auth-client</artifactId>
 
