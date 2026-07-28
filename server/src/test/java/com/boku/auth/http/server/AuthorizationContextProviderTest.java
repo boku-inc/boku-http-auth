@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -36,7 +36,7 @@ public class AuthorizationContextProviderTest {
                 }
                 return null;
             }
-        }).when(mockHttpMessageSigner).verifySignature(Matchers.any(AuthorizationHeader.class), Matchers.any(CanonicalHttpRequest.class));
+        }).when(mockHttpMessageSigner).verifySignature(ArgumentMatchers.any(AuthorizationHeader.class), ArgumentMatchers.any(CanonicalHttpRequest.class));
     }
 
     @Rule

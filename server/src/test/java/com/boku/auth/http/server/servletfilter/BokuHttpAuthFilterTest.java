@@ -13,16 +13,16 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ReadListener;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.WriteListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.boku.auth.http.AuthorizationHeader;
 import com.boku.auth.http.exception.InvalidApplicationSuppliedAuthorizationHeaderException;
@@ -68,7 +68,7 @@ public class BokuHttpAuthFilterTest {
             }
         })
             .when(mockHttpMessageSigner)
-            .sign(org.mockito.Matchers.any(AuthorizationHeader.class), org.mockito.Matchers.any(CanonicalHttpMessage.class));
+            .sign(org.mockito.ArgumentMatchers.any(AuthorizationHeader.class), org.mockito.ArgumentMatchers.any(CanonicalHttpMessage.class));
     }
 
     private void assertNoCurrentRequest() throws InvalidAuthorizationHeaderException {
@@ -205,7 +205,7 @@ public class BokuHttpAuthFilterTest {
         Assert.assertEquals("a response", new String(outputStreamCapture.toByteArray()));
 
         ArgumentCaptor<String> respHeaderCapture = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(response).setHeader(org.mockito.Matchers.eq("X-SignedResponse"), respHeaderCapture.capture());
+        Mockito.verify(response).setHeader(org.mockito.ArgumentMatchers.eq("X-SignedResponse"), respHeaderCapture.capture());
         AuthorizationHeader ah = AuthorizationHeader.parse(respHeaderCapture.getValue());
         Assert.assertEquals("2/HMAC_SHA256(H+SHA256(E))", ah.getScheme());
         Assert.assertEquals("a", ah.getPartnerId());
@@ -214,7 +214,7 @@ public class BokuHttpAuthFilterTest {
         Assert.assertEquals("das_sig", ah.getSignature());
 
         ArgumentCaptor<CanonicalHttpMessage> signedMessageCaptor = ArgumentCaptor.forClass(CanonicalHttpMessage.class);
-        Mockito.verify(this.mockHttpMessageSigner).sign(org.mockito.Matchers.any(AuthorizationHeader.class), signedMessageCaptor.capture());
+        Mockito.verify(this.mockHttpMessageSigner).sign(org.mockito.ArgumentMatchers.any(AuthorizationHeader.class), signedMessageCaptor.capture());
         CanonicalHttpMessage httpResponse = signedMessageCaptor.getValue();
         Assert.assertNotNull(httpResponse);
         Assert.assertEquals(sha256Hex("a response"), httpResponse.getEntityDigest());
@@ -351,7 +351,7 @@ public class BokuHttpAuthFilterTest {
         Assert.assertEquals("a response", new String(outputStreamCapture.toByteArray()));
 
         ArgumentCaptor<String> respHeaderCapture = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(response).setHeader(org.mockito.Matchers.eq("X-SignedResponse"), respHeaderCapture.capture());
+        Mockito.verify(response).setHeader(org.mockito.ArgumentMatchers.eq("X-SignedResponse"), respHeaderCapture.capture());
         AuthorizationHeader ah = AuthorizationHeader.parse(respHeaderCapture.getValue());
         Assert.assertEquals("2/HMAC_SHA256(H+SHA256(E))", ah.getScheme());
         Assert.assertEquals("a", ah.getPartnerId());
@@ -459,7 +459,7 @@ public class BokuHttpAuthFilterTest {
                 new InvalidApplicationSuppliedAuthorizationHeaderException("Failed to sign message", new InvalidAuthorizationHeaderException("Unrecognized partner-id"))
         )
             .when(this.mockHttpMessageSigner)
-            .sign(org.mockito.Matchers.any(AuthorizationHeader.class), org.mockito.Matchers.any(CanonicalHttpMessage.class));
+            .sign(org.mockito.ArgumentMatchers.any(AuthorizationHeader.class), org.mockito.ArgumentMatchers.any(CanonicalHttpMessage.class));
 
         HttpServletRequest request = getServletRequest();
 
@@ -549,7 +549,7 @@ public class BokuHttpAuthFilterTest {
         Assert.assertEquals("a response", new String(outputStreamCapture.toByteArray()));
 
         ArgumentCaptor<String> respHeaderCapture = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(response).setHeader(org.mockito.Matchers.eq("X-SignedResponse"), respHeaderCapture.capture());
+        Mockito.verify(response).setHeader(org.mockito.ArgumentMatchers.eq("X-SignedResponse"), respHeaderCapture.capture());
         AuthorizationHeader ah = AuthorizationHeader.parse(respHeaderCapture.getValue());
         Assert.assertEquals("2/HMAC_SHA256(H+SHA256(E))", ah.getScheme());
         Assert.assertEquals("a", ah.getPartnerId());
@@ -622,7 +622,7 @@ public class BokuHttpAuthFilterTest {
         Assert.assertEquals("a response", new String(outputStreamCapture.toByteArray()));
 
         ArgumentCaptor<String> respHeaderCapture = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(response).setHeader(org.mockito.Matchers.eq("X-SignedResponse"), respHeaderCapture.capture());
+        Mockito.verify(response).setHeader(org.mockito.ArgumentMatchers.eq("X-SignedResponse"), respHeaderCapture.capture());
         AuthorizationHeader ah = AuthorizationHeader.parse(respHeaderCapture.getValue());
         Assert.assertEquals("2/HMAC_SHA256(H+SHA256(E))", ah.getScheme());
         Assert.assertEquals("a", ah.getPartnerId());
@@ -681,7 +681,7 @@ public class BokuHttpAuthFilterTest {
         Assert.assertEquals("", new String(outputStreamCapture.toByteArray()));
 
         ArgumentCaptor<String> respHeaderCapture = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(response).setHeader(org.mockito.Matchers.eq("X-SignedResponse"), respHeaderCapture.capture());
+        Mockito.verify(response).setHeader(org.mockito.ArgumentMatchers.eq("X-SignedResponse"), respHeaderCapture.capture());
         AuthorizationHeader ah = AuthorizationHeader.parse(respHeaderCapture.getValue());
         Assert.assertEquals("2/HMAC_SHA256(H+SHA256(E))", ah.getScheme());
         Assert.assertEquals("a", ah.getPartnerId());
@@ -690,7 +690,7 @@ public class BokuHttpAuthFilterTest {
         Assert.assertEquals("das_sig", ah.getSignature());
 
         ArgumentCaptor<CanonicalHttpMessage> signedMessageCaptor = ArgumentCaptor.forClass(CanonicalHttpMessage.class);
-        Mockito.verify(this.mockHttpMessageSigner).sign(org.mockito.Matchers.any(AuthorizationHeader.class), signedMessageCaptor.capture());
+        Mockito.verify(this.mockHttpMessageSigner).sign(org.mockito.ArgumentMatchers.any(AuthorizationHeader.class), signedMessageCaptor.capture());
         CanonicalHttpMessage httpResponse = signedMessageCaptor.getValue();
         Assert.assertNotNull(httpResponse);
         Assert.assertNull(httpResponse.getEntityDigest());
@@ -723,7 +723,7 @@ public class BokuHttpAuthFilterTest {
         Mockito.when(ret.getMethod()).thenReturn(method);
         Mockito.when(ret.getRequestURI()).thenReturn(path);
         Mockito.when(ret.getQueryString()).thenReturn(qstr);
-        Mockito.when(ret.getHeaders(org.mockito.Matchers.anyString())).thenReturn(Collections.enumeration(Collections.emptyList()));
+        Mockito.when(ret.getHeaders(org.mockito.ArgumentMatchers.anyString())).thenReturn(Collections.enumeration(Collections.emptyList()));
 
         final ByteArrayInputStream is;
         if (entity != null) {
@@ -773,8 +773,8 @@ public class BokuHttpAuthFilterTest {
                 headers.get(name).add(value);
                 return null;
             }
-        }).when(ret).setHeader(org.mockito.Matchers.anyString(), org.mockito.Matchers.anyString());
-        Mockito.when(ret.getHeaders(org.mockito.Matchers.anyString())).then(new Answer<Collection<String>>() {
+        }).when(ret).setHeader(org.mockito.ArgumentMatchers.anyString(), org.mockito.ArgumentMatchers.anyString());
+        Mockito.when(ret.getHeaders(org.mockito.ArgumentMatchers.anyString())).then(new Answer<Collection<String>>() {
             @Override
             public Collection<String> answer(InvocationOnMock invocation) {
                 String name = (String)invocation.getArguments()[0];

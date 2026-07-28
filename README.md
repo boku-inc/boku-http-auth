@@ -74,11 +74,14 @@ is located under `com.boku.auth.http.client`.
 
 ### Dependencies
 
-In addition to depending on the `core` module, the client code depends only on Apache HttpClient v4.5:  
-https://hc.apache.org/httpcomponents-client-4.5.x/
+In addition to depending on the `core` module, the client code depends on Apache HttpClient v4.5  
+(https://hc.apache.org/httpcomponents-client-4.5.x/) and Jakarta XML Binding:
+`jakarta.xml.bind:jakarta.xml.bind-api` plus runtime implementation
+`org.glassfish.jaxb:jaxb-runtime`.
 
-Marshalling occurs via the JREs built in JAX-B support. If you want marshalling support for e.g. JSON, you will need to
-slot in extra libraries to do so.
+Marshalling occurs via JAXB (Jakarta XML Binding). Java 17 does not include JAXB in the JRE, so these dependencies are
+required for XML marshalling/unmarshalling. If you want marshalling support for e.g. JSON, you will need to slot in
+extra libraries to do so.
 
 ### Usage: BokuAPIClient
 
@@ -136,11 +139,13 @@ This code is located under `com.boku.auth.http.server`.
 
 ### Dependencies
 
-In addition to depending on the `core` module, the server code depends on the Java Servlet API v3.1.0.
+In addition to depending on the `core` module, the server code depends on the Jakarta Servlet API v6.1.0
+(`jakarta.servlet:jakarta.servlet-api`).
 
-This code should be compatible with earlier and later versions of the servlet API, but depending on your web server
-environment you may need to exclude the servlet API dependency or make other version management adjustments to make
-things work well together.
+This code targets the `jakarta.servlet` namespace (Jakarta EE 11 / Servlet 6.1), as used by Spring 7 and Jetty 12.
+Depending on your web server environment you may need to exclude the servlet API dependency or make other version
+management adjustments to make things work well together. If you need the legacy `javax.servlet` (Java EE) build, use
+boku-http-auth 1.x instead.
 
 ### Usage
 
@@ -176,10 +181,10 @@ When using this static version of `ServerAuthorizationComponentsFactory` configu
 This module contains standalone programs that are designed to be used as-is for testing purposes, rather than code
 to be imported into production applications.  
 
-To get started, build the project and then run `java -jar tools/target/boku-http-auth-tools-1.3-main.jar` - the online
+To get started, build the project and then run `java -jar tools/target/boku-http-auth-tools-2.0-main.jar` - the online
 help should let you proceed from there.
 
-If you have trouble building these tools, a pre-built package is available under the name `boku-auth-tools-1.3.zip`.  
+If you have trouble building these tools, a pre-built package is available under the name `boku-auth-tools-2.0.zip`.  
 
 There are several classes under `com.boku.auth.http.tools` that start with the prefix `Example_` - we have attempted
 to make these as simple as possible, and although they are not production quality code they can be used to see how
@@ -188,7 +193,6 @@ to set up and use some of the provided library components.
 Code in the other non-Example classes may also be consulted, but please keep in mind a lot of the code in the tools
 package is geared towards displaying as much debug information as possible, and may not be a good example of how to
 write concise and efficient production code.
-
 
 
 
