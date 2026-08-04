@@ -83,6 +83,9 @@ Marshalling occurs via JAXB (Jakarta XML Binding). Java 17 does not include JAXB
 required for XML marshalling/unmarshalling. If you want marshalling support for e.g. JSON, you will need to slot in
 extra libraries to do so.
 
+**Migrating from 1.x:** If your request/response model classes use `javax.xml.bind` annotations (e.g.
+`@XmlRootElement`, `@XmlElement`), you must change them to `jakarta.xml.bind` annotations when upgrading to 2.x.
+
 ### Usage: BokuAPIClient
 
 #### Setup
