@@ -5,6 +5,11 @@
 This package contains both production ready library code, plus some demo applications to show how it is used and to aid
 in testing.
 
+**Requires Java 17 or later.** Version 2.x targets the `jakarta.*` namespace (Jakarta EE 11) and is intended for
+Spring 7 / Jetty 12 environments. If you need the `javax.*` namespace, use 1.2 — the last release of the 1.x line,
+which requires Java 8 or later. The 1.x line is discontinued; see the migration notes in the Client and Server sections
+below before upgrading.
+
 The code is split into several modules, of which in a typical integration you will only need one or two:
 
  - **core**: Core message signing functionality common to client and server. If you're integrating into a client or
@@ -84,7 +89,8 @@ required for XML marshalling/unmarshalling. If you want marshalling support for 
 extra libraries to do so.
 
 **Migrating from 1.x:** If your request/response model classes use `javax.xml.bind` annotations (e.g.
-`@XmlRootElement`, `@XmlElement`), you must change them to `jakarta.xml.bind` annotations when upgrading to 2.x.
+`@XmlRootElement`, `@XmlElement`), you must change them to `jakarta.xml.bind` annotations when upgrading to 2.x. The
+signing behaviour and wire format are unchanged. If you need the legacy `javax.xml.bind` build, use boku-http-auth 1.2.
 
 ### Usage: BokuAPIClient
 
@@ -147,8 +153,11 @@ In addition to depending on the `core` module, the server code depends on the Ja
 
 This code targets the `jakarta.servlet` namespace (Jakarta EE 11 / Servlet 6.1), as used by Spring 7 and Jetty 12.
 Depending on your web server environment you may need to exclude the servlet API dependency or make other version
-management adjustments to make things work well together. If you need the legacy `javax.servlet` (Java EE) build, use
-boku-http-auth 1.x instead.
+management adjustments to make things work well together.
+
+**Migrating from 1.x:** `BokuHttpAuthFilter` now implements `jakarta.servlet.Filter` rather than
+`javax.servlet.Filter`, so it requires a Jakarta EE 9+ container (e.g. Jetty 12 EE11, Tomcat 10+). The signing
+behaviour and wire format are unchanged. If you need the legacy `javax.servlet` build, use boku-http-auth 1.2.
 
 ### Usage
 
