@@ -3,7 +3,7 @@ package com.boku.auth.http.server.servletfilter;
 import java.util.Collection;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.boku.auth.http.AuthorizationHeader;
 import com.boku.auth.http.httpmessage.CanonicalHttpHeader;

@@ -3,7 +3,7 @@ package com.boku.auth.http.server.servletfilter;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.boku.auth.http.AuthorizationHeader;
 import com.boku.auth.http.exception.InvalidAuthorizationHeaderException;

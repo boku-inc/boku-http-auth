@@ -30,7 +30,7 @@ public class HttpMessageSignerTest {
 
     public HttpMessageSignerTest() throws InvalidKeyException {
         Mockito.when(
-                mockStringSigner.generateSignature(org.mockito.Matchers.any(SignatureAlgorithm.class), org.mockito.Matchers.anyString(), org.mockito.Matchers.anyString(), org.mockito.Matchers.anyString())
+                mockStringSigner.generateSignature(org.mockito.ArgumentMatchers.any(SignatureAlgorithm.class), org.mockito.ArgumentMatchers.anyString(), org.mockito.ArgumentMatchers.anyString(), org.mockito.ArgumentMatchers.anyString())
         ).thenReturn("das_sig");
     }
 
@@ -45,7 +45,7 @@ public class HttpMessageSignerTest {
         Assert.assertEquals("das_sig", ah.getSignature());
 
         ArgumentCaptor<String> signedStringCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(mockStringSigner).generateSignature(org.mockito.Matchers.eq(SignatureAlgorithm.HMAC_SHA256), org.mockito.Matchers.eq(ah.getPartnerId()), org.mockito.Matchers.eq(ah.getKeyId()), signedStringCaptor.capture());
+        Mockito.verify(mockStringSigner).generateSignature(org.mockito.ArgumentMatchers.eq(SignatureAlgorithm.HMAC_SHA256), org.mockito.ArgumentMatchers.eq(ah.getPartnerId()), org.mockito.ArgumentMatchers.eq(ah.getKeyId()), signedStringCaptor.capture());
         Assert.assertEquals(
                 "POST /path/to/sign?foo=bar&hoge=piyo\n" +
                 "Content-Type: text/html; charset=utf8\n" +
@@ -66,7 +66,7 @@ public class HttpMessageSignerTest {
         Assert.assertEquals("das_sig", ah.getSignature());
 
         ArgumentCaptor<String> signedStringCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(mockStringSigner).generateSignature(org.mockito.Matchers.eq(SignatureAlgorithm.HMAC_SHA256), org.mockito.Matchers.eq(ah.getPartnerId()), org.mockito.Matchers.eq(ah.getKeyId()), signedStringCaptor.capture());
+        Mockito.verify(mockStringSigner).generateSignature(org.mockito.ArgumentMatchers.eq(SignatureAlgorithm.HMAC_SHA256), org.mockito.ArgumentMatchers.eq(ah.getPartnerId()), org.mockito.ArgumentMatchers.eq(ah.getKeyId()), signedStringCaptor.capture());
         Assert.assertEquals(
                 "POST /path/to/sign\n" +
                 "Content-Type: text/html; charset=utf8\n" +
@@ -87,7 +87,7 @@ public class HttpMessageSignerTest {
         Assert.assertEquals("das_sig", ah.getSignature());
 
         ArgumentCaptor<String> signedStringCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(mockStringSigner).generateSignature(org.mockito.Matchers.eq(SignatureAlgorithm.HMAC_SHA256), org.mockito.Matchers.eq(ah.getPartnerId()), org.mockito.Matchers.eq(ah.getKeyId()), signedStringCaptor.capture());
+        Mockito.verify(mockStringSigner).generateSignature(org.mockito.ArgumentMatchers.eq(SignatureAlgorithm.HMAC_SHA256), org.mockito.ArgumentMatchers.eq(ah.getPartnerId()), org.mockito.ArgumentMatchers.eq(ah.getKeyId()), signedStringCaptor.capture());
         Assert.assertEquals(
                 "POST /path/to/sign?foo=bar&hoge=piyo\n" +
                 "Content-Type: text/html; charset=utf8\n" +
@@ -107,7 +107,7 @@ public class HttpMessageSignerTest {
         Assert.assertEquals("das_sig", ah.getSignature());
 
         ArgumentCaptor<String> signedStringCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(mockStringSigner).generateSignature(org.mockito.Matchers.eq(SignatureAlgorithm.HMAC_SHA256), org.mockito.Matchers.eq(ah.getPartnerId()), org.mockito.Matchers.eq(ah.getKeyId()), signedStringCaptor.capture());
+        Mockito.verify(mockStringSigner).generateSignature(org.mockito.ArgumentMatchers.eq(SignatureAlgorithm.HMAC_SHA256), org.mockito.ArgumentMatchers.eq(ah.getPartnerId()), org.mockito.ArgumentMatchers.eq(ah.getKeyId()), signedStringCaptor.capture());
         Assert.assertEquals(
                 "Content-Type: text/html; charset=utf8\n" +
                 "entity_digest!\n" +
@@ -141,7 +141,7 @@ public class HttpMessageSignerTest {
         ));
 
         Mockito.when(
-                mockStringSigner.generateSignature(org.mockito.Matchers.any(SignatureAlgorithm.class), org.mockito.Matchers.anyString(), org.mockito.Matchers.anyString(), org.mockito.Matchers.anyString())
+                mockStringSigner.generateSignature(org.mockito.ArgumentMatchers.any(SignatureAlgorithm.class), org.mockito.ArgumentMatchers.anyString(), org.mockito.ArgumentMatchers.anyString(), org.mockito.ArgumentMatchers.anyString())
         ).thenThrow(new InvalidKeyException());
 
         AuthorizationHeader ah = getAuthorizationHeader();

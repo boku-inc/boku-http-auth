@@ -7,6 +7,9 @@ This package contains tools to help with testing implementations of the Boku HTT
 All commands are located inside a single jar, which can be executed using `java -jar auth-tools.jar`. From there, the
 online help should guide you on how to use the tools.
 
+**Requires Java 17 or later.** On an older JRE the jar fails to start with `UnsupportedClassVersionError`; use the
+1.2 tools bundle if you need to run on Java 8.
+
 
 ## Configuration
 

@@ -1,14 +1,17 @@
 package com.boku.auth.http.it.support;
 
-import javax.servlet.http.HttpServlet;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.ee11.servlet.FilterHolder;
+import org.eclipse.jetty.ee11.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee11.servlet.ServletHandler;
+import org.eclipse.jetty.ee11.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.EnumSet;
 
 import com.boku.auth.http.server.servletfilter.BokuHttpAuthFilter;
 
@@ -23,12 +26,11 @@ public class AuthTestingServer {
     public AuthTestingServer(BokuHttpAuthFilter authFilter) {
         this.jetty = new Server(0);
 
-        this.servletHandler = new ServletHandler();
-        servletHandler.addFilterWithMapping(new FilterHolder(authFilter), "/auth/*", 0);
+        ServletContextHandler contextHandler = new ServletContextHandler();
+        this.servletHandler = contextHandler.getServletHandler();
+        servletHandler.addFilterWithMapping(new FilterHolder(authFilter), "/auth/*", EnumSet.of(DispatcherType.REQUEST));
 
-        HandlerCollection handlers = new HandlerCollection();
-        handlers.addHandler(servletHandler);
-        this.jetty.setHandler(handlers);
+        this.jetty.setHandler(contextHandler);
 
         try {
             this.jetty.start();

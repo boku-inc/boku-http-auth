@@ -3,11 +3,11 @@ package com.boku.auth.http.it;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import com.boku.auth.http.AuthorizationHeader;
 import com.boku.auth.http.it.support.Servlets;
@@ -52,7 +52,7 @@ public class ClientTest extends CWAIntegrationTestBase {
 
         Assert.assertEquals(
             "POST /echo?qparam=1\n" +
-            "Content-Type: text/plain; charset=UTF-8\n" +
+            "Content-Type: text/plain; charset=utf-8\n" +
             "X-BOKU-Something: 4\n" +
             "X-BOKU-Test: 2\n" +
             "X-BOKU-Test: 3\n" +
@@ -78,7 +78,7 @@ public class ClientTest extends CWAIntegrationTestBase {
         Assert.assertEquals(
             "POST /auth/echo?qparam=1\n" +
             "Authorization: auth contents\n" +
-            "Content-Type: text/plain; charset=UTF-8\n" +
+            "Content-Type: text/plain; charset=utf-8\n" +
             "X-BOKU-Something: 4\n" +
             "X-BOKU-Test: 2\n" +
             "X-BOKU-Test: 3\n" +
@@ -333,7 +333,10 @@ public class ClientTest extends CWAIntegrationTestBase {
                 env.authContextProvider, new HttpRequestHandler() {
                     @Override
                     public void handle(HttpServletRequest req, HttpServletResponse resp, byte[] requestEntity) throws IOException {
-                        resp.setContentType("text/plain");
+                        // Jetty 12 auto-appends its default charset (iso-8859-1) to any text/* response, so we use a
+                        // non-text content type here to produce a genuinely charset-less response and verify the
+                        // client's no-charset -> UTF-8 decoding fallback.
+                        resp.setHeader("Content-Type", "application/json");
                         resp.getOutputStream().write("This is a test! これはテスト！".getBytes(StandardCharsets.UTF_8));
                     }
                 }
@@ -343,7 +346,7 @@ public class ClientTest extends CWAIntegrationTestBase {
             .get(url("/auth/broken"))
             .withAuthorization(authorization())
             .execute(BokuAPIClientResponse.class);
-        Assert.assertEquals("text/plain", response.getEntity().getContentType().toString());
+        Assert.assertEquals("application/json", response.getEntity().getContentType().toString());
         Assert.assertEquals("This is a test! これはテスト！", response.getEntity().getDataAsText());
     }
 
