@@ -12,8 +12,6 @@ import jakarta.xml.bind.Unmarshaller;
 
 import com.boku.auth.http.client.EntityMarshaller;
 import com.boku.auth.http.client.BokuAPIClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Converts entities to and from XML using JAX-B. Can be configured in validating or non-validating mode.<br>
@@ -23,8 +21,6 @@ import org.slf4j.LoggerFactory;
  * non-breaking schema / API changes may be introduced seamlessly.
  */
 public class XMLEntityMarshaller implements EntityMarshaller {
-
-    private static final Logger logger = LoggerFactory.getLogger(XMLEntityMarshaller.class);
 
     private final ConcurrentMap<Class<?>, JAXBContextWrapper> jaxbContexts = new ConcurrentHashMap<>();
     private final boolean validateUnmarshal;
@@ -73,11 +69,10 @@ public class XMLEntityMarshaller implements EntityMarshaller {
             Unmarshaller unmarshaller = this.getJAXBContext(type).createUnmarshaller();
             o = unmarshaller.unmarshal(sr);
         } catch (JAXBException ex) {
-            logger.error("Failed to parse response XML into {}:\n{}", type, xml, ex);
+            // The response body is deliberately not logged: the caller has the response and decides what to log.
             throw new UnmarshalException("Failed to parse response", ex);
         }
         if (!type.isAssignableFrom(o.getClass())) {
-            logger.error("Response XML not of expected type {}:\n{}", type, xml);
             throw new UnmarshalException("Expected response of " + type + ", but got " + o.getClass());
         }
         @SuppressWarnings("unchecked")
